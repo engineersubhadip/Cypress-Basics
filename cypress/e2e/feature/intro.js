@@ -1,7 +1,11 @@
 /// <reference types="cypress" />
 
-describe("Test Suite", () => {
-  it("Test case 1", () => {
-    cy.visit("pages/iot-dashboard");
-  });
+beforeEach("Open test app", () => {
+  cy.visit("/");
 });
+
+afterEach("Closing the app", () => {
+  cy.reload();
+});
+
+it("Hello World 1", () => {});
