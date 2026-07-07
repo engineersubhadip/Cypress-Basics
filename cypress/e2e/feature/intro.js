@@ -31,7 +31,7 @@ it("Child Elements", () => {
   cy.get("nb-card").find("nb-radio-group").contains("Option 1");
 });
 
-it.only("Parent Elements", () => {
+it("Parent Elements", () => {
   // * Lets target the Sign-in button for "Using the Grid"
   // * Approach 1
   cy.get("#inputEmail1")
@@ -45,4 +45,16 @@ it.only("Parent Elements", () => {
     .parents("form")
     .contains("button", "Sign in")
     .then(console.log);
+});
+
+it.only("How to return value", () => {
+  // * Return using the .then()
+  cy.wrap("Hello there")
+    .then((currVal) => {
+      cy.log("1st element -> ", currVal);
+      return cy.wrap("Mogadishu");
+    })
+    .then((secondElement) => {
+      cy.log("2nd element -> ", secondElement);
+    });
 });
