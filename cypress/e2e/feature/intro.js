@@ -47,7 +47,7 @@ it("Parent Elements", () => {
     .then(console.log);
 });
 
-it.only("How to return value", () => {
+it("How to return value", () => {
   // * Return using the .then()
   cy.wrap("Hello there")
     .then((currVal) => {
@@ -56,5 +56,32 @@ it.only("How to return value", () => {
     })
     .then((secondElement) => {
       cy.log("2nd element -> ", secondElement);
+    });
+});
+
+it.only("How to extract values from elements", () => {
+  // * Approach 1 : Using jQuery
+  cy.get("#exampleInputEmail1").then((ele) => {
+    const result = ele.attr("placeholder");
+    console.log(result);
+  });
+  // * Approach 2 : Using invoke()
+  cy.contains("label", "Email address")
+    .invoke("attr", "for")
+    .then((ele) => {
+      cy.log("Received element -> ", ele);
+    });
+  // * Approach 3 : How to capture text entered in input field
+  cy.get("#exampleInputEmail1").type("Hello DEBUG here ");
+  cy.get("#exampleInputEmail1")
+    .invoke("prop", "value")
+    .then((result) => {
+      console.log("From input field -> ", result);
+    });
+  // * Approach 4 : How to capture inner Text
+  cy.get('[for="exampleInputEmail1"]')
+    .invoke("text")
+    .then((ele) => {
+      console.log("DEBUG -> ", ele);
     });
 });
