@@ -22,11 +22,20 @@ it("Cypress Locators", () => {
   cy.contains("nb-card", "Horizontal form").contains("Sign in");
 });
 
-it.only("Child Elements", () => {
+it("Child Elements", () => {
   // * Approach 1
   cy.contains("nb-card", "Using the Grid").find(".row").find("button");
   // * Approach 2
   cy.contains("nb-card", "Using the Grid").contains(".row", "Sign in");
   // * Lets target "Option 1"
   cy.get("nb-card").find("nb-radio-group").contains("Option 1");
+});
+
+it.only("Parent Elements", () => {
+  // * Lets target the Sign-in button for "Using the Grid"
+  cy.get("#inputEmail1")
+    .parents()
+    .eq(2)
+    .contains("button", "Sign in")
+    .then(console.log);
 });
