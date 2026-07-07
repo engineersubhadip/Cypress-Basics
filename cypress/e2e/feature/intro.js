@@ -33,9 +33,16 @@ it("Child Elements", () => {
 
 it.only("Parent Elements", () => {
   // * Lets target the Sign-in button for "Using the Grid"
+  // * Approach 1
   cy.get("#inputEmail1")
     .parents()
     .eq(2)
+    .contains("button", "Sign in")
+    .then(console.log);
+
+  // * Approach 2
+  cy.get("#inputEmail1")
+    .parents("form")
     .contains("button", "Sign in")
     .then(console.log);
 });
