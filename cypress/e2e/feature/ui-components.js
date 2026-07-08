@@ -84,12 +84,8 @@ it.only("Dealing with Dropdowns", () => {
   cy.contains("label", "Position:")
     .parent("div.form-group")
     .find("button.select-button")
-    .click();
-
-  cy.contains("label", "Position:")
-    .parent("div.form-group")
-    .find("button.select-button")
     .then((dropDownButton) => {
+      cy.wrap(dropDownButton).click();
       cy.get(".option-list nb-option")
         .should("be.visible")
         .each((currOption, index, list) => {
