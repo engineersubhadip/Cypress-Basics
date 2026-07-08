@@ -52,7 +52,7 @@ it("Dealing with radio buttons", () => {
     .should("be.checked");
 });
 
-it.only("Dealing with Check boxes", () => {
+it("Dealing with Check boxes", () => {
   // * 1. Always try to target an <input> field with tyype="radio"
   // * 2. Always use .check()/.uncheck() on an <input> field
   // * 3. Followed by .should("be.checked")/.should("be.unchecked")
@@ -60,4 +60,20 @@ it.only("Dealing with Check boxes", () => {
   cy.contains("a", "Toastr").click();
 
   cy.get("input[type='checkbox']").first().uncheck({ force: true });
+});
+
+it.only("Dealing with Dropdowns", () => {
+  cy.contains("a", "Modal & Overlays").click();
+  cy.contains("a", "Toastr").click();
+
+  cy.contains("label", "Position:")
+    .parent("div.form-group")
+    .find("button.select-button")
+    .click();
+
+  cy.get(".option-list").contains("bottom-end").click();
+  cy.contains("label", "Position:")
+    .parent("div.form-group")
+    .find("button.select-button > span")
+    .should("have.text", "bottom-end");
 });
