@@ -76,4 +76,32 @@ it.only("Dealing with Dropdowns", () => {
     .parent("div.form-group")
     .find("button.select-button > span")
     .should("have.text", "bottom-end");
+
+  cy.wait(2500);
+
+  // * Scenario : We have a drop-down, we need to select every value from it and verify the selected value is displayed
+
+  cy.contains("label", "Position:")
+    .parent("div.form-group")
+    .find("button.select-button")
+    .click();
+
+  cy.contains("label", "Position:")
+    .parent("div.form-group")
+    .find("button.select-button")
+    .then((dropDownButton) => {
+      cy.get(".option-list nb-option")
+        .should("be.visible")
+        .each((currOption, index, list) => {
+          const currOptionText = currOption.text();
+          cy.wait(250);
+          cy.wrap(currOption).click();
+          cy.wrap(dropDownButton)
+            .find("span")
+            .should("have.text", currOptionText);
+          if (index < list.length - 1) {
+            cy.wrap(dropDownButton).click();
+          }
+        });
+    });
 });
