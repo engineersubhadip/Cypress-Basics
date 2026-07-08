@@ -28,8 +28,8 @@ it("Dealing with input fields", () => {
   cy.get("#input-password").type("Welcome{enter}");
 });
 
-it.only("Dealing with radio buttons", () => {
-  // * 1. Always try to target an <input> field
+it("Dealing with radio buttons", () => {
+  // * 1. Always try to target an <input> field with tyype="radio"
   // * 2. Always use .check() on an <input> field
   // * 3. Followed by .should("be.checked")
   cy.contains("a", "Forms").click();
@@ -50,4 +50,14 @@ it.only("Dealing with radio buttons", () => {
     .find("input")
     .check({ force: true })
     .should("be.checked");
+});
+
+it.only("Dealing with Check boxes", () => {
+  // * 1. Always try to target an <input> field with tyype="radio"
+  // * 2. Always use .check()/.uncheck() on an <input> field
+  // * 3. Followed by .should("be.checked")/.should("be.unchecked")
+  cy.contains("a", "Modal & Overlays").click();
+  cy.contains("a", "Toastr").click();
+
+  cy.get("input[type='checkbox']").first().uncheck({ force: true });
 });
