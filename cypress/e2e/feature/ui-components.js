@@ -62,7 +62,7 @@ it("Dealing with Check boxes", () => {
   cy.get("input[type='checkbox']").first().uncheck({ force: true });
 });
 
-it.only("Dealing with Dropdowns", () => {
+it("Dealing with Dropdowns", () => {
   cy.contains("a", "Modal & Overlays").click();
   cy.contains("a", "Toastr").click();
 
@@ -100,4 +100,13 @@ it.only("Dealing with Dropdowns", () => {
           }
         });
     });
+});
+
+it.only("Dealing with tooltips", () => {
+  cy.contains("a", "Modal & Overlays").click();
+  cy.contains("a", "Tooltip").click();
+  cy.contains("button", "Top").trigger("mouseenter");
+  cy.get("nb-tooltip")
+    .contains("span", "This is a tooltip")
+    .should("have.text", "This is a tooltip");
 });
