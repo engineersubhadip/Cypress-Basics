@@ -4,7 +4,7 @@ beforeEach("Hititng the base url", () => {
   cy.visit("/");
 });
 
-it.only("Dealing with input fields", () => {
+it("Dealing with input fields", () => {
   cy.contains("a", "Forms").click();
   cy.contains("a", "Form Layouts").click();
   const name = "Subhadip";
@@ -26,4 +26,28 @@ it.only("Dealing with input fields", () => {
   cy.contains("Login").click();
   cy.get("#input-email").type("test@nondaracademy.com");
   cy.get("#input-password").type("Welcome{enter}");
+});
+
+it.only("Dealing with radio buttons", () => {
+  // * 1. Always try to target an <input> field
+  // * 2. Always use .check() on an <input> field
+  // * 3. Followed by .should("be.checked")
+  cy.contains("a", "Forms").click();
+  cy.contains("a", "Form Layouts").click();
+
+  // * Approach : 1
+  cy.get("nb-radio.status-basic")
+    .eq(0)
+    .find("input")
+    .check({ force: true })
+    .should("be.checked");
+
+  cy.wait(1000);
+
+  // * Approach : 2
+  cy.get("nb-radio.status-basic")
+    .first()
+    .find("input")
+    .check({ force: true })
+    .should("be.checked");
 });
