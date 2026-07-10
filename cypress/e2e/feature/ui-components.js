@@ -102,11 +102,58 @@ it("Dealing with Dropdowns", () => {
     });
 });
 
-it.only("Dealing with tooltips", () => {
+it("Dealing with tooltips", () => {
   cy.contains("a", "Modal & Overlays").click();
   cy.contains("a", "Tooltip").click();
   cy.contains("button", "Top").trigger("mouseenter");
   cy.get("nb-tooltip")
     .contains("span", "This is a tooltip")
     .should("have.text", "This is a tooltip");
+});
+
+it.only("Dealing with web-tables", () => {
+  cy.contains("a", "Tables & Data").click();
+  cy.contains("a", "Smart Table").click();
+  // * Scenario :- Find user having firstName = Larry, lastName = Bird . Then change his age and click confirm
+
+  let targetRow;
+  cy.get("tbody > tr")
+    .each((currRow, index) => {
+      // * Lets capture col having first name as Larry and last name as Bird
+      cy.wrap(currRow)
+        .find("td")
+        .eq(2)
+        .invoke("text")
+        .as("firstName", { type: "static" });
+      cy.wrap(currRow)
+        .find("td")
+        .eq(3)
+        .invoke("text")
+        .as("lastName", { type: "static" });
+      cy.get("@firstName").then((firstName) => {
+        cy.get("@lastName").then((lastName) => {
+          const finalName = firstName + " " + lastName;
+          if (finalName === "Larry Bird") {
+            targetRow = index;
+          }
+        });
+      });
+    })
+    .then(() => {
+      if (!targetRow) {
+        throw new Error("Target text could not be found");
+      }
+      cy.get(
+        `tbody > tr:nth-child(${targetRow + 1}) > td:first-child a:first-child`,
+      ).as("editConfirmButton");
+      cy.get("@editConfirmButton").click();
+      cy.get(`tbody > tr:nth-child(${targetRow + 1}) > td:last-child input`)
+        .as("ageField")
+        .clear()
+        .type("22", { delay: 250 });
+      cy.get("@editConfirmButton").click();
+      cy.get(`tbody > tr:nth-child(${targetRow + 1}) > td:last-child`)
+        .invoke("text")
+        .should("be.eql", "22");
+    });
 });
