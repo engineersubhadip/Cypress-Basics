@@ -111,7 +111,7 @@ it("Dealing with tooltips", () => {
     .should("have.text", "This is a tooltip");
 });
 
-it.only("Dealing with web-tables", () => {
+it("Dealing with web-tables [Edit Record]", () => {
   cy.contains("a", "Tables & Data").click();
   cy.contains("a", "Smart Table").click();
   // * Scenario :- Find user having firstName = Larry, lastName = Bird . Then change his age and click confirm
@@ -156,4 +156,33 @@ it.only("Dealing with web-tables", () => {
         .invoke("text")
         .should("be.eql", "22");
     });
+});
+
+it.only("Dealing with web tables [Filter Rows]", () => {
+  cy.contains("a", "Tables & Data").click();
+  cy.contains("a", "Smart Table").click();
+  // * Sceanrio : Lets filter out records in the table with age = X
+  const userAges = [20, 30, 40, 200];
+  cy.wrap(userAges).each((currUserAge) => {
+    cy.get('th input[placeholder="Age"]')
+      .click()
+      .clear()
+      .type(currUserAge, { delay: 150 })
+      .invoke("prop", "value")
+      .should("be.eql", currUserAge.toString());
+    cy.wait(500); // * Giving enough time for the table to display properly
+    cy.get("tbody tr").each((currRow) => {
+      cy.wrap(currRow)
+        .find("td")
+        .last()
+        .invoke("text")
+        .should((currText) => {
+          if (currUserAge >= 100) {
+            expect(currText.trim()).to.eql("No data found");
+          } else {
+            expect(currText.trim()).to.eql(currUserAge.toString());
+          }
+        });
+    });
+  });
 });
